@@ -12,7 +12,7 @@
 **./processing.R**  
 [Arguments] None.  
 [Dependancies] None. These will be downloaded by the R Script itself if required.  
-[Description] R Script file to reproduce the analysis of the data from "Human Activity Recognition Using Smartphones Data Set" by UCI Machine Learning Repository.  
+[Description] R Script file to reproduce the cleaning and analysis of the data from "Human Activity Recognition Using Smartphones Data Set" by UCI Machine Learning Repository.  
                  
 **./README.Rmd**  
 [Arguments] None.  
