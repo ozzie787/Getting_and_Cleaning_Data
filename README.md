@@ -1,6 +1,6 @@
 *********************************
 # README  
-## DATE: 2018-08-07 16:30:00 BST  
+## DATE: 2018-08-07 17:00:00 BST  
 *********************************
 
 ### Contents List
@@ -9,7 +9,7 @@
 [Dependancies] None.  
 [Description] The file you are currently reading.  
                  
-**./processing.R**  
+**./run_analysis.R**  
 [Arguments] None.  
 [Dependancies] None. These will be downloaded by the R Script itself if required.  
 [Description] R Script file to reproduce the cleaning and analysis of the data from "Human Activity Recognition Using Smartphones Data Set" by UCI Machine Learning Repository.  

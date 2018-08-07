@@ -147,6 +147,8 @@ $(document).ready(function () {
 <hr />
 <div id="obtaining-and-cleaning-a-data-set" class="section level1">
 <h1>Obtaining and Cleaning a Data Set</h1>
+<p><code>{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE} library(knitr) library(rmarkdown)</code></p>
+<p><code>{r global_options, eval=FALSE, include=FALSE} knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',                       echo=TRUE, warning=FALSE, message=FALSE)</code></p>
 <div id="librariespackages-required" class="section level2">
 <h2>Libraries/Packages Required</h2>
 <p>The following libraries were used</p>
@@ -155,8 +157,7 @@ $(document).ready(function () {
 <li>dplyr</li>
 </ul>
 <p>If installed, they can be loaded as follows:</p>
-<pre class="r"><code>library(data.table)
-library(dplyr)</code></pre>
+<p><code>{r libraries, message=FALSE, warning=FALSE, include=TRUE} library(data.table) library(dplyr)</code></p>
 </div>
 <div id="obtaining-extracting-data" class="section level2">
 <h2>Obtaining &amp; Extracting Data</h2>
@@ -170,19 +171,9 @@ library(dplyr)</code></pre>
 <div id="download-of-and-extracting-the-raw-data" class="section level3">
 <h3>Download of, and Extracting the Raw Data</h3>
 <p>If the data is not downloaded, the data is downloaded from the above URL. If the data has been previously downloaded and named as data.zip, the script prints a message and moves onto the next step.</p>
-<pre class="r"><code>if (!file.exists(&quot;data.zip&quot;)) {
-     message(&quot;Downloading data (≈60 Mb) from 'https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip'... Please wait&quot;)
-     download.file(url = &quot;https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip&quot;, dest = &quot;data.zip&quot;, method = &quot;curl&quot;)
-} else {
-     message(&quot;Data already downloaded as data.zip&quot;)
-}</code></pre>
+<p><code>{r message=FALSE} if (!file.exists(&quot;data.zip&quot;)) {      message(&quot;Downloading data (≈60 Mb) from 'https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip'... Please wait&quot;)      download.file(url = &quot;https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip&quot;, dest = &quot;data.zip&quot;, method = &quot;curl&quot;) } else {      message(&quot;Data already downloaded as data.zip&quot;) }</code></p>
 <p>If the data is not extracted, the data is extracted from data.zip. If the data has been previously extracted to to “UCI HAR Dataset”, the script prints a message and moves onto the next step.</p>
-<pre class="r"><code>if (file.exists(&quot;data.zip&quot;) &amp; !file.exists(&quot;UCI HAR Dataset&quot;)) {
-     message(&quot;Extracting data... Please wait&quot;)
-     unzip(&quot;data.zip&quot;)
-} else {
-     message(&quot;Data already extracted to ./UCI HAR Dataset/&quot;)
-}</code></pre>
+<p><code>{r message = FALSE} if (file.exists(&quot;data.zip&quot;) &amp; !file.exists(&quot;UCI HAR Dataset&quot;)) {      message(&quot;Extracting data... Please wait&quot;)      unzip(&quot;data.zip&quot;) } else {      message(&quot;Data already extracted to ./UCI HAR Dataset/&quot;) }</code></p>
 </div>
 </div>
 <div id="producing-the-full-data-set" class="section level2">
@@ -190,7 +181,7 @@ library(dplyr)</code></pre>
 <div id="loading-the-data-to-data-tables-from-the-raw-data-files" class="section level3">
 <h3>Loading the data to data tables from the raw data files</h3>
 <p>The plain text files were loaded into data tables using fread(). The data vectors, data labels, subject ID and column header components are labeled <code>X</code>, <code>y</code>, <code>_sub</code> and <code>headers</code> respectively. The activity labels are read into a vector, <code>act_labs</code>.</p>
-<pre class="r"><code>trainX    &lt;- fread(&quot;UCI HAR Dataset/train/X_train.txt&quot;)
+<pre class="{r}"><code>trainX    &lt;- fread(&quot;UCI HAR Dataset/train/X_train.txt&quot;)
 trainy    &lt;- fread(&quot;UCI HAR Dataset/train/y_train.txt&quot;)
 train_sub &lt;- fread(&quot;UCI HAR Dataset/train/subject_train.txt&quot;)
 testX     &lt;- fread(&quot;UCI HAR Dataset/test/X_test.txt&quot;)
@@ -202,16 +193,16 @@ headers   &lt;- readLines(&quot;UCI HAR Dataset/features.txt&quot;)</code></pre>
 <div id="combining-the-data-tables" class="section level3">
 <h3>Combining the data tables</h3>
 <p>The rows of vector, data label and subject ID components from the training and testing data sets were recombined separately using <code>rbind()</code>. Durring the formation of <code>comboy</code>, the numerical classes (1 to 6) are substituted with character strings. This is acived using <code>mutate()</code> where the activity number is referanced against a list of activity labels expressed as a vector.</p>
-<pre class="r"><code>comboX    &lt;- rbind(trainX,testX)
+<pre class="{r}"><code>comboX    &lt;- rbind(trainX,testX)
 comboy    &lt;- rbind(trainy,testy) %&gt;% mutate(V1=tstrsplit(act_labs,&quot; &quot;)[[2]][V1])
 combo_sub &lt;- rbind(train_sub,test_sub)</code></pre>
 <p><code>cbind()</code> was used to join the columns of subject_IDs (<code>_sub</code>), activity labels (<code>y</code>) and vector data (<code>X</code>) to form the combined data set <code>data</code>.</p>
-<pre class="r"><code>data      &lt;- cbind(combo_sub,comboy,comboX)</code></pre>
+<pre class="{r}"><code>data      &lt;- cbind(combo_sub,comboy,comboX)</code></pre>
 </div>
 <div id="data-table-column-headers" class="section level3">
 <h3>Data Table Column Headers</h3>
 <p>To make the column headings more human readable, using <code>gsub</code> any parethesis were removed and hyphens (-) were substituted for periods (.). Variables with a lowercase “t” ot “f” prefix were substituted to “time” and “freq” respectively using <code>gsub()</code>.</p>
-<pre class="r"><code>headers &lt;- {
+<pre class="{r}"><code>headers &lt;- {
      headers %&gt;%
      gsub(&quot;\\(&quot;,&quot;&quot;,.) %&gt;%
      gsub(&quot;\\)&quot;,&quot;&quot;,.) %&gt;%
@@ -220,96 +211,27 @@ combo_sub &lt;- rbind(train_sub,test_sub)</code></pre>
      gsub(&quot; f&quot;,&quot; freq&quot;,.)
 }</code></pre>
 <p>The columns of the data set were named using <code>colnames()</code>. At this stage, the numbers read from original header list are perserved to provide unique header names for use with the <code>dplyr</code> package. <code>Subject_ID</code> and <code>Activity</code> are not included in the header list read in, therefore are combined with <code>headers</code> to provide sufficient names for all the columns.</p>
-<pre class="r"><code>colnames(data) &lt;- c(&quot;Subject_ID&quot;, &quot;Activity&quot;, headers)</code></pre>
+<pre class="{r}"><code>colnames(data) &lt;- c(&quot;Subject_ID&quot;, &quot;Activity&quot;, headers)</code></pre>
 </div>
 </div>
 <div id="constructing-the-final-data-set" class="section level2">
 <h2>Constructing the Final Data Set</h2>
 <p><code>grep()</code> was used to extract any column that contained data relating to a mean or standard deviation of a quantity and their names were stored in <code>names_mean</code> and <code>names_std</code> respectively. The option <code>value = TRUE</code> is set to return the actual values rather than a list of indices. The REGEX expressions [Mm] and [Ss] is used to capture columns including the patterns: “Mean”; “mean”; “Std”; and “std”.</p>
-<pre class="r"><code>names_mean &lt;- grep(&quot;[Mm]ean&quot;, headers, value = TRUE)
+<pre class="{r}"><code>names_mean &lt;- grep(&quot;[Mm]ean&quot;, headers, value = TRUE)
 names_std  &lt;- grep(&quot;[Ss]td&quot;, headers, value = TRUE)</code></pre>
 <p>The final data set, <code>final_data</code> was formed using <code>select()</code>. The columns, “Subject_ID” and “Activity” are written explicitly as they are included in neither <code>names_mean</code> nor <code>names_std</code>.</p>
-<pre class="r"><code>final_data &lt;- data %&gt;% select(c(&quot;Subject_ID&quot;,&quot;Activity&quot;,names_mean,names_std))</code></pre>
+<pre class="{r}"><code>final_data &lt;- data %&gt;% select(c(&quot;Subject_ID&quot;,&quot;Activity&quot;,names_mean,names_std))</code></pre>
 <p>At this stage, the perserved numbers in the column headers are removed using <code>tstrsplit()</code> and spliting on a space. The indice “[[2]]” is specified as we only want to perseve the second level of the output containing the column names without the numbers.</p>
-<pre class="r"><code>head(names_mean)</code></pre>
-<pre><code>## [1] &quot;1 timeBodyAcc.mean.X&quot;     &quot;2 timeBodyAcc.mean.Y&quot;    
-## [3] &quot;3 timeBodyAcc.mean.Z&quot;     &quot;41 timeGravityAcc.mean.X&quot;
-## [5] &quot;42 timeGravityAcc.mean.Y&quot; &quot;43 timeGravityAcc.mean.Z&quot;</code></pre>
-<pre class="r"><code>final_headers &lt;- tstrsplit(c(names_mean,names_std),&quot; &quot;)[[2]]
+<pre class="{r}"><code>head(names_mean)
+final_headers &lt;- tstrsplit(c(names_mean,names_std),&quot; &quot;)[[2]]
 head(final_headers)</code></pre>
-<pre><code>## [1] &quot;timeBodyAcc.mean.X&quot;    &quot;timeBodyAcc.mean.Y&quot;    &quot;timeBodyAcc.mean.Z&quot;   
-## [4] &quot;timeGravityAcc.mean.X&quot; &quot;timeGravityAcc.mean.Y&quot; &quot;timeGravityAcc.mean.Z&quot;</code></pre>
 <p>The column names of <code>final_data</code> was set using <code>colnames()</code>. Like before <code>Subject_ID</code> and <code>Activity</code> are not included in the header list, therefore are combined with <code>final_headers</code> to provide sufficient names for all the columns.</p>
-<pre class="r"><code>colnames(final_data) &lt;- c(&quot;Subject_ID&quot;,&quot;Activity&quot;,final_headers)</code></pre>
+<pre class="{r}"><code>colnames(final_data) &lt;- c(&quot;Subject_ID&quot;,&quot;Activity&quot;,final_headers)</code></pre>
 </div>
 <div id="results" class="section level2">
 <h2>Results</h2>
 <p>The tidy data set <code>final_result</code> was obtained by grouping <code>final_data</code> by <code>Subject_ID</code> and <code>Activity</code> and piping it to <code>summarise_each</code>. The option <code>funs()</code> is set to <code>mean</code> to obtain a single mean for each recorded variable per user and per activity.</p>
-<pre class="r"><code>final_result &lt;- {
-     group_by(final_data,Subject_ID,Activity) %&gt;%
-     summarise_each(funs(mean))
-}
-print(final_result)</code></pre>
-<pre><code>## # A tibble: 180 x 88
-## # Groups:   Subject_ID [?]
-##    Subject_ID Activity timeBodyAcc.mea… timeBodyAcc.mea… timeBodyAcc.mea…
-##         &lt;int&gt; &lt;chr&gt;               &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
-##  1          1 LAYING              0.222         -0.0405           -0.113 
-##  2          1 SITTING             0.261         -0.00131          -0.105 
-##  3          1 STANDING            0.279         -0.0161           -0.111 
-##  4          1 WALKING             0.277         -0.0174           -0.111 
-##  5          1 WALKING…            0.289         -0.00992          -0.108 
-##  6          1 WALKING…            0.255         -0.0240           -0.0973
-##  7          2 LAYING              0.281         -0.0182           -0.107 
-##  8          2 SITTING             0.277         -0.0157           -0.109 
-##  9          2 STANDING            0.278         -0.0184           -0.106 
-## 10          2 WALKING             0.276         -0.0186           -0.106 
-## # ... with 170 more rows, and 83 more variables:
-## #   timeGravityAcc.mean.X &lt;dbl&gt;, timeGravityAcc.mean.Y &lt;dbl&gt;,
-## #   timeGravityAcc.mean.Z &lt;dbl&gt;, timeBodyAccJerk.mean.X &lt;dbl&gt;,
-## #   timeBodyAccJerk.mean.Y &lt;dbl&gt;, timeBodyAccJerk.mean.Z &lt;dbl&gt;,
-## #   timeBodyGyro.mean.X &lt;dbl&gt;, timeBodyGyro.mean.Y &lt;dbl&gt;,
-## #   timeBodyGyro.mean.Z &lt;dbl&gt;, timeBodyGyroJerk.mean.X &lt;dbl&gt;,
-## #   timeBodyGyroJerk.mean.Y &lt;dbl&gt;, timeBodyGyroJerk.mean.Z &lt;dbl&gt;,
-## #   timeBodyAccMag.mean &lt;dbl&gt;, timeGravityAccMag.mean &lt;dbl&gt;,
-## #   timeBodyAccJerkMag.mean &lt;dbl&gt;, timeBodyGyroMag.mean &lt;dbl&gt;,
-## #   timeBodyGyroJerkMag.mean &lt;dbl&gt;, freqBodyAcc.mean.X &lt;dbl&gt;,
-## #   freqBodyAcc.mean.Y &lt;dbl&gt;, freqBodyAcc.mean.Z &lt;dbl&gt;,
-## #   freqBodyAcc.meanFreq.X &lt;dbl&gt;, freqBodyAcc.meanFreq.Y &lt;dbl&gt;,
-## #   freqBodyAcc.meanFreq.Z &lt;dbl&gt;, freqBodyAccJerk.mean.X &lt;dbl&gt;,
-## #   freqBodyAccJerk.mean.Y &lt;dbl&gt;, freqBodyAccJerk.mean.Z &lt;dbl&gt;,
-## #   freqBodyAccJerk.meanFreq.X &lt;dbl&gt;, freqBodyAccJerk.meanFreq.Y &lt;dbl&gt;,
-## #   freqBodyAccJerk.meanFreq.Z &lt;dbl&gt;, freqBodyGyro.mean.X &lt;dbl&gt;,
-## #   freqBodyGyro.mean.Y &lt;dbl&gt;, freqBodyGyro.mean.Z &lt;dbl&gt;,
-## #   freqBodyGyro.meanFreq.X &lt;dbl&gt;, freqBodyGyro.meanFreq.Y &lt;dbl&gt;,
-## #   freqBodyGyro.meanFreq.Z &lt;dbl&gt;, freqBodyAccMag.mean &lt;dbl&gt;,
-## #   freqBodyAccMag.meanFreq &lt;dbl&gt;, freqBodyBodyAccJerkMag.mean &lt;dbl&gt;,
-## #   freqBodyBodyAccJerkMag.meanFreq &lt;dbl&gt;, freqBodyBodyGyroMag.mean &lt;dbl&gt;,
-## #   freqBodyBodyGyroMag.meanFreq &lt;dbl&gt;,
-## #   freqBodyBodyGyroJerkMag.mean &lt;dbl&gt;,
-## #   freqBodyBodyGyroJerkMag.meanFreq &lt;dbl&gt;,
-## #   `angletBodyAccMean,gravity` &lt;dbl&gt;,
-## #   `angletBodyAccJerkMean,gravityMean` &lt;dbl&gt;,
-## #   `angletBodyGyroMean,gravityMean` &lt;dbl&gt;,
-## #   `angletBodyGyroJerkMean,gravityMean` &lt;dbl&gt;,
-## #   `angleX,gravityMean` &lt;dbl&gt;, `angleY,gravityMean` &lt;dbl&gt;,
-## #   `angleZ,gravityMean` &lt;dbl&gt;, timeBodyAcc.std.X &lt;dbl&gt;,
-## #   timeBodyAcc.std.Y &lt;dbl&gt;, timeBodyAcc.std.Z &lt;dbl&gt;,
-## #   timeGravityAcc.std.X &lt;dbl&gt;, timeGravityAcc.std.Y &lt;dbl&gt;,
-## #   timeGravityAcc.std.Z &lt;dbl&gt;, timeBodyAccJerk.std.X &lt;dbl&gt;,
-## #   timeBodyAccJerk.std.Y &lt;dbl&gt;, timeBodyAccJerk.std.Z &lt;dbl&gt;,
-## #   timeBodyGyro.std.X &lt;dbl&gt;, timeBodyGyro.std.Y &lt;dbl&gt;,
-## #   timeBodyGyro.std.Z &lt;dbl&gt;, timeBodyGyroJerk.std.X &lt;dbl&gt;,
-## #   timeBodyGyroJerk.std.Y &lt;dbl&gt;, timeBodyGyroJerk.std.Z &lt;dbl&gt;,
-## #   timeBodyAccMag.std &lt;dbl&gt;, timeGravityAccMag.std &lt;dbl&gt;,
-## #   timeBodyAccJerkMag.std &lt;dbl&gt;, timeBodyGyroMag.std &lt;dbl&gt;,
-## #   timeBodyGyroJerkMag.std &lt;dbl&gt;, freqBodyAcc.std.X &lt;dbl&gt;,
-## #   freqBodyAcc.std.Y &lt;dbl&gt;, freqBodyAcc.std.Z &lt;dbl&gt;,
-## #   freqBodyAccJerk.std.X &lt;dbl&gt;, freqBodyAccJerk.std.Y &lt;dbl&gt;,
-## #   freqBodyAccJerk.std.Z &lt;dbl&gt;, freqBodyGyro.std.X &lt;dbl&gt;,
-## #   freqBodyGyro.std.Y &lt;dbl&gt;, freqBodyGyro.std.Z &lt;dbl&gt;,
-## #   freqBodyAccMag.std &lt;dbl&gt;, freqBodyBodyAccJerkMag.std &lt;dbl&gt;,
-## #   freqBodyBodyGyroMag.std &lt;dbl&gt;, freqBodyBodyGyroJerkMag.std &lt;dbl&gt;</code></pre>
+<p><code>{r message=FALSE, warning=FALSE} final_result &lt;- {      group_by(final_data,Subject_ID,Activity) %&gt;%      summarise_each(funs(mean)) } print(final_result)</code></p>
 </div>
 <div id="finalisation-clean-up" class="section level2">
 <h2>Finalisation &amp; Clean-up</h2>
