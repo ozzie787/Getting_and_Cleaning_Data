@@ -1,10 +1,14 @@
 ---
 title: "Obtaining and Cleaning a Data Set"
-author: "Stephen Osborne"
+author: ""
 output:
      html_document:
           toc: TRUE
 ---
+
+*********
+
+# Obtaining and Cleaning a Data Set
 
 ```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 library(knitr)

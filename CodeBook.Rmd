@@ -1,12 +1,16 @@
 ---
 title: "Obtaining and Cleaning a Data Set"
-author: "Stephen Osborne"
+author: ""
 output:
      html_document:
           toc: TRUE
 ---
 
-```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+*********
+
+# Obtaining and Cleaning a Data Set
+
+```{r include=FALSE}
 library(knitr)
 library(rmarkdown)
 ```
