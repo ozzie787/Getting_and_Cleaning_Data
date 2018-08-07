@@ -1,9 +1,9 @@
 *********************************
 # README  
-##DATE: 2018-08-07 14:30:00 BST  
+## DATE: 2018-08-07 14:30:00 BST  
 *********************************
 
-###Contents List
+### Contents List
 **./README.md**  
 [Arguments] None.  
 [Dependancies] None.  
