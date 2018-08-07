@@ -1,0 +1,7 @@
+
+UCI HAR Dataset/train/X_train.txt
+UCI HAR Dataset/train/y_train.txt
+UCI HAR Dataset/features_info.txt
+UCI HAR Dataset/features.txt
+UCI HAR Dataset/activity_labels.txt
+data.zip
